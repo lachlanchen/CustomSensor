@@ -1,68 +1,98 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
 
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
 
-# digiOBSCURA - Cảm Biến Ảnh và Máy Ảnh Kỹ Thuật Số DIY 📷
+# digiOBSCURA - Cảm biến ảnh và máy ảnh kỹ thuật số DIY 📷
 
-[![License: CC BY-NC-SA 3.0 (firmware header)](https://img.shields.io/badge/Firmware%20Header-CC%20BY--NC--SA%203.0-lightgrey)](https://creativecommons.org/licenses/by-nc-sa/3.0/)
-[![Repo License](https://img.shields.io/badge/Repository%20License-GPL--3.0-blue)](../LICENSE)
-[![Project Type](https://img.shields.io/badge/Type-DIY%20Hardware%20%2B%20Firmware-orange)](#tong-quan)
-[![Sensor](https://img.shields.io/badge/Sensor-32x32%20(1024px)-2ea44f)](#tinh-nang)
-[![MCU](https://img.shields.io/badge/MCU-SAMD21G18A-1f6feb)](#kien-truc-phan-cungfirmware-hien-tai)
+[![License: CC BY-NC-SA 3.0 (firmware header)](https://img.shields.io/badge/Firmware%20Header-CC%20BY--NC--SA%203.0-lightgrey?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+[![Repo License](https://img.shields.io/badge/Repository%20License-GPL--3.0-2563eb?style=for-the-badge)](../LICENSE)
+[![Project Type](https://img.shields.io/badge/Type-DIY%20Hardware%20%2B%20Firmware-f97316?style=for-the-badge)](#tổng-quan)
+[![Sensor](https://img.shields.io/badge/Sensor-32x32%20(1024px)-16a34a?style=for-the-badge)](#tính-năng)
+[![MCU](https://img.shields.io/badge/MCU-SAMD21G18A-1d4ed8?style=for-the-badge)](#kiến-trúc-phần-cứngfirmware-hiện-tại)
+[![Contributions](https://img.shields.io/badge/Contributions-Welcome-0f766e?style=for-the-badge&logo=github)](#đóng-góp-)
+[![GitHub Stars](https://img.shields.io/github/stars/lachlanchen/CustomSensor?style=for-the-badge)](https://github.com/lachlanchen/CustomSensor/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/lachlanchen/CustomSensor?style=for-the-badge)](https://github.com/lachlanchen/CustomSensor/issues)
 
-> Một bộ imaging stack DIY mở hoàn toàn: PCB cảm biến tự thiết kế, bo MCU, firmware, trình xem webcam và các phần vỏ có thể in 3D.
+> Một hệ sinh thái chụp ảnh DIY hoàn toàn mở: PCB cảm biến tự thiết kế, bo mạch MCU, firmware, công cụ xem webcam và các bộ phận vỏ có thể in 3D.
 
-## Tổng Quan
-`digiOBSCURA` là hệ thống chụp ảnh DIY 32x32 được xây dựng quanh mảng phototransistor tự thiết kế và bộ điều khiển nền tảng SAMD21.
+## 📚 Mục lục
 
-Kho này bao gồm:
-- Firmware cho chế độ chụp độc lập và lưu vào thẻ SD.
-- Firmware + sketch Processing cho chế độ xem trực tiếp kiểu webcam qua serial.
-- Bộ mã nguồn KiCad đầy đủ cho cả hai bo (`image_sensor` và `mcu`) cùng Gerber sản xuất.
-- Tài nguyên cơ khí (`.f3d`, `.stl`) cho vỏ/lens/chân tripod.
+- [Tổng quan](#tổng-quan)
+- [Demo](#demo)
+- [Tính năng](#tính-năng)
+- [Cấu trúc dự án](#cấu-trúc-dự-án)
+- [Kiến trúc phần cứng/Firmware (Hiện tại)](#kiến-trúc-phần-cứngfirmware-hiện-tại)
+- [Yêu cầu](#yêu-cầu)
+- [Cài đặt](#cài-đặt)
+- [Sử dụng](#sử-dụng)
+- [Ghi chú cấu hình](#ghi-chú-cấu-hình)
+- [Ví dụ](#ví-dụ)
+- [Ghi chú phát triển](#ghi-chú-phát-triển)
+- [Khắc phục sự cố](#khắc-phục-sự-cố)
+- [Lộ trình và ghi chú kỹ thuật](#lộ-trình-và-ghi-chú-kỹ-thuật)
+- [Đóng góp](#đóng-góp)
+- [Hỗ trợ](#%E2%9D%A4%EF%B8%8F-support)
+- [Giấy phép](#giấy-phép)
+
+## Tổng quan 🛰️
+
+`digiOBSCURA` là hệ thống cảm biến hình ảnh DIY 32x32 được xây dựng quanh một mảng phototransistor tùy chỉnh và bộ điều khiển dựa trên SAMD21.
+
+Kho này chứa:
+- Firmware cho chế độ chụp ảnh độc lập ghi trực tiếp ra thẻ SD.
+- Firmware + sketch Processing cho xem trực tiếp kiểu webcam qua serial.
+- Toàn bộ file nguồn KiCad cho cả hai bo mạch (`image_sensor` và `mcu`) cùng các file Gerber sản xuất.
+- Tài nguyên cơ khí (`.f3d`, `.stl`) cho phần vỏ, ống kính, chân tripod.
 - Ghi chú thiết kế và tài liệu lộ trình nâng cấp theo giai đoạn trong [`docs/`](../docs/).
 
-### Tóm Tắt Nhanh
-| Khu vực | Triển khai hiện tại |
-|---|---|
-| Mảng ảnh | Ma trận phototransistor tự thiết kế `32x32` (`1024` pixel) |
-| Ghép kênh | `2 x ADG732` (chọn hàng + cột) |
-| Bộ điều khiển | `SAMD21G18A` |
-| Đầu ra camera | File BMP trên thẻ SD (`DGO_0000.bmp`, tự tăng) |
-| Chế độ live | Serial (`115200`) + renderer host bằng Processing |
-| Tài nguyên thiết kế | KiCad + Gerber + BOM artifacts + file `F3D`/`STL` |
+## Tóm tắt nhanh 📌
 
-## Demo (Nội Dung Gốc Chuẩn) 🎬
-Xem video tại đây:  
+| Hạng mục | Chi tiết |
+| --- | --- |
+| Quy mô dự án | Camera + firmware + viewer + thiết kế cơ khí |
+| Mảng cảm biến | `32x32` (`1024`) ma trận phototransistor tự thiết kế |
+| Bộ điều khiển lõi | `SAMD21G18A` |
+| Đầu ra hình ảnh | BMP trên thẻ SD / luồng khung ảnh trực tiếp qua serial |
+| Quy trình mục tiêu | Chụp độc lập • Xem trước kiểu webcam |
+
+## Demo 🎬
+
+Xem video:
+
 [![digiOBSCURA Video](https://img.youtube.com/vi/PaXweP73NT4/0.jpg)](https://youtu.be/PaXweP73NT4)
 
-Danh sách BOM cho cả hai bo: https://www.findchips.com/org/10-open-hardware/list/162969-digiobscura-diy-image-sensor-and-digital-camera
+Xem BOM cho cả hai bo tại: https://www.findchips.com/org/10-open-hardware/list/162969-digiobscura-diy-image-sensor-and-digital-camera
 
-## Tính Năng
-- Mảng ảnh phototransistor tự thiết kế 32x32 (1024 pixel).
-- Định địa chỉ hàng/cột bằng dual ADG732 mux.
+## Tính năng ✨
+
+- Mảng cảm biến ảnh phototransistor tùy chỉnh 32x32 (1024 pixel).
+- Đánh địa chỉ hàng/cột bằng dual ADG732 mux.
 - Quy trình camera độc lập:
-  - OLED UI.
-  - Ngõ vào shutter.
-  - Xuất ra thẻ SD (`DGO_0000.bmp`, tự tăng).
+  - Giao diện trạng thái OLED.
+  - Đầu vào shutter.
+  - Xuất ra thẻ SD (`DGO_####.bmp`, tự tăng dần).
 - Quy trình webcam:
   - Firmware Arduino phản hồi yêu cầu pixel qua serial ở `115200`.
-  - Ứng dụng Processing render hình xám 32x32 theo thời gian thực.
+  - Ứng dụng Processing hiển thị ảnh xám 32x32 trực tiếp.
 - Mã nguồn phần cứng mở:
-  - Schematic/PCB KiCad.
-  - Output phục vụ sản xuất và BOM artifacts.
+  - Sơ đồ mạch/PCB KiCad.
+  - Kết quả sản xuất và BOM artifacts.
   - File cơ khí có thể in.
 
-## Cấu Trúc Dự Án
+## Cấu trúc dự án 🧱
 
 ```text
 CustomSensor/
 |- README.md
 |- LICENSE
 |- Firmware/
-|  |- digiOBSCURA_camera/digiOBSCURA_camera.ino
-|  |- digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino
-|  `- digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde
+|  |- digiOBSCURA_camera/
+|  |  |- digiOBSCURA_camera.ino
+|  |- digiOBSCURA_Webcam_Arduino/
+|  |  |- digiOBSCURA_Webcam_Arduino.ino
+|  `- digiOBSCURA_Webcam_Processing/
+|     `- digiOBSCURA_Webcam_Processing.pde
 |- docs/
 |  |- overview.md
 |  |- 01-firmware-differencing.md
@@ -71,49 +101,65 @@ CustomSensor/
 |  `- 04-full-event-sensor-redesign.md
 |- PCB/
 |  |- image_sensor/
+|  |  |- digiobscura.kicad_pcb
+|  |  |- digiobscura.sch
+|  |  |- sym-lib-table
+|  |  `- fp-lib-table
 |  `- mcu/
+|     |- digiobscura_mcu.kicad_pcb
+|     |- digiobscura_mcu.sch
+|     |- sym-lib-table
+|     `- fp-lib-table
 |- PCB-Production/
 |- F3D/
 |- STL/
 |- logo/
-`- i18n/
+|- i18n/
+|- .auto-readme-work/
+|  |- pipeline-context.md
+|  `- repo-structure-analysis.md
+`- .git
 ```
 
-## Kiến Trúc Phần Cứng/Firmware (Hiện Tại)
+## Kiến trúc phần cứng/Firmware (Hiện tại) 🧰
+
 Dựa trên [`docs/overview.md`](../docs/overview.md):
 
-| Phân hệ | Chi tiết |
+| Tiểu hệ thống | Chi tiết |
 |---|---|
-| Ma trận cảm biến | `1024 x ALS-PT19` phototransistor |
-| Định địa chỉ | `2 x ADG732` analog mux (hàng + cột) |
+| Mảng cảm biến | `1024 x ALS-PT19` phototransistors |
+| Cách đánh địa chỉ | `2 x ADG732` analog mux (hàng + cột) |
 | Bo lõi | `SAMD21G18A` |
-| Đường nguồn | Pin `18650`, sạc `MCP73831`, ổn áp `3.3 V` |
-| Đường tín hiệu | `OUTCOL` được kéo mức cao bởi GPIO MCU; đường cảm biến được chọn sẽ đọc trên `OUTROW` qua ADC |
-| Hành vi chụp | Firmware camera quét toàn khung và ghi file BMP 24-bit |
+| Đường dẫn nguồn | Pin `18650`, sạc `MCP73831`, điều áp `3.3 V` |
+| Đường tín hiệu | `OUTCOL` được kéo mức cao bởi GPIO MCU; đường cảm biến đã chọn được đọc trên `OUTROW` qua ADC |
+| Hành vi chụp | Firmware camera quét toàn bộ khung và ghi file BMP 24-bit |
 
-## Điều Kiện Tiên Quyết
+## Yêu cầu 🧰
 
 ### Phần cứng
+
 - Bo `image_sensor` và `mcu` đã lắp ráp (hoặc dây nối tương đương).
-- Bo mục tiêu tương thích SAMD21 khớp với mapping chân trong firmware.
+- Bo mục tiêu tương thích SAMD21 có thể thay thế với đúng assignment chân theo firmware.
 - Thẻ MicroSD (chế độ camera).
-- OLED SSD1306 64x48 (chế độ camera, software SPI 4 dây trong sketch hiện tại).
-- Nút/công tắc shutter input.
+- OLED `64x48` SSD1306 (chế độ camera, SPI phần mềm 4 dây trong sketch hiện tại).
+- Nút/công tắc đầu vào shutter.
 
 ### Phần mềm
+
 - Arduino IDE (hoặc Arduino CLI) với board package SAMD21.
-- Thư viện Arduino cần cho firmware camera:
+- Thư viện Arduino bắt buộc cho firmware camera:
   - `U8g2`
   - `SPI`
   - `SD`
 - Processing IDE/runtime cho [`Firmware/digiOBSCURA_Webcam_Processing`](../Firmware/digiOBSCURA_Webcam_Processing/).
 
-## Cài Đặt
+## Cài đặt 🧩
 
-1. Clone kho này:
+1. Clone repository:
 
 ```bash
-git clone https://github.com/<your-org-or-user>/CustomSensor.git
+
+git clone https://github.com/lachlanchen/CustomSensor.git
 cd CustomSensor
 ```
 
@@ -121,112 +167,117 @@ cd CustomSensor
 - Chế độ camera: [`Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino`](../Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino)
 - Chế độ webcam: [`Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino`](../Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino)
 
-3. Chọn đúng board/port SAMD21 rồi nạp chương trình.
+3. Chọn board SAMD21 và cổng đúng, rồi upload.
 
 4. Với chế độ webcam, mở sketch Processing:
 - [`Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde`](../Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde)
 
-## Cách Sử Dụng
+## Sử dụng 🚀
 
-### Chế Độ Camera (quy trình snapshot SD) 📸
-1. Nạp `digiOBSCURA_camera.ino`.
-2. Gắn thẻ SD.
-3. Khi khởi động, firmware kiểm tra tên file và tìm `DGO_####.bmp` còn trống tiếp theo.
-4. Nhấn shutter input.
-5. Thiết bị chụp, ghi BMP vào SD, rồi hiển thị thumbnail preview trên OLED.
+### Chế độ Camera (luồng snapshot SD) 📸
 
-### Chế Độ Webcam (live view render phía host) 🖥️
-1. Nạp `digiOBSCURA_Webcam_Arduino.ino`.
-2. Kết nối USB serial (`115200`).
-3. Trong sketch Processing, đặt đúng cổng serial (file hiện có `String portName = "COM32"`).
-4. Chạy sketch Processing để lấy giá trị pixel và vẽ khung 32x32.
+1. Flash `digiOBSCURA_camera.ino`.
+2. Gắn thẻ SD đã định dạng FAT/FAT32.
+3. Cấp nguồn/reset board; firmware sẽ tìm tên file `DGO_####.bmp` chưa dùng tiếp theo.
+4. Kích hoạt chụp bằng đầu vào shutter.
+5. Thiết bị chụp và ghi BMP lên thẻ SD, đồng thời hiển thị ảnh thu nhỏ trên OLED.
 
-## Ghi Chú Cấu Hình
-Giá trị mặc định ở cấp firmware từ mã nguồn hiện tại:
+### Chế độ Webcam (xem trực tiếp do host render) 🖥️
+
+1. Flash `digiOBSCURA_Webcam_Arduino.ino`.
+2. Kết nối qua USB serial ở `115200`.
+3. Trong sketch Processing, đặt `String portName` đúng với cổng serial thực tế của bạn (mẫu mặc định là `COM32`).
+4. Chạy sketch Processing; nó sẽ polling 32x32 pixel và render khung ảnh xám theo thời gian thực.
+
+## Ghi chú cấu hình 🛠️
+
+Các mặc định hiện tại ở mức firmware theo source:
 
 | Thiết lập | Giá trị / hành vi hiện tại |
 |---|---|
 | Độ phân giải | Cố định `32x32` |
 | Độ phân giải ADC | `analogReadResolution(12)` |
-| Lấy trung bình ở camera mode | `avgCount = 10` (tăng chất lượng, giảm tốc độ khung hình) |
+| Trung bình ở chế độ camera | `avgCount = 10` (chất lượng cao hơn, tốc độ khung thấp hơn) |
 | Chân SD CS (camera sketch) | `cardPin = 21` |
-| Baud serial (nhánh webcam) | `115200` |
-| Mapping I/O | Mảng/biến hardcoded (`SCOL`, `SROW`, `WR`, `CS`, `EN`, `OUTCOL`, `OUTROW`, v.v.) |
+| Baud serial (đường webcam) | `115200` |
+| Mapping I/O | Các mảng/biến hardcoded (`SCOL`, `SROW`, `WR`, `CS`, `EN`, `OUTCOL`, `OUTROW`, ...) |
 
-Nếu phần cứng của bạn đi dây khác, hãy cập nhật định nghĩa chân ở gần đầu mỗi file `.ino` trước khi nạp.
+Nếu dây nối của bạn khác, cập nhật phần định nghĩa chân gần đầu mỗi file `.ino` trước khi flash.
 
-## Ví Dụ
+## Ví dụ 🧪
 
 ### Mở và chỉnh sửa firmware camera
+
 ```bash
 cd Firmware/digiOBSCURA_camera
 # open digiOBSCURA_camera.ino in Arduino IDE
 ```
 
-### Mở và chỉnh sửa trình xem webcam bằng Processing
+### Mở và chỉnh sửa webcam viewer bằng Processing
+
 ```bash
 cd Firmware/digiOBSCURA_Webcam_Processing
 # open digiOBSCURA_Webcam_Processing.pde in Processing IDE
 ```
 
-### Mở mã nguồn PCB trong KiCad
+### Mở nguồn PCB trong KiCad
+
 - `PCB/image_sensor/digiobscura.sch`
 - `PCB/image_sensor/digiobscura.kicad_pcb`
 - `PCB/mcu/digiobscura_mcu.sch`
 - `PCB/mcu/digiobscura_mcu.kicad_pcb`
 
-## Ghi Chú Phát Triển
-- Kho này chưa có build system thống nhất (`Makefile`, `platformio.ini`, `package.json`, v.v.).
-- Quy trình phát triển hiện trải trên Arduino + Processing + KiCad + file CAD cơ khí.
-- `PCB/image_sensor/README.md` và `PCB/mcu/README.md` có vẻ cũ/dạng template và hiện chưa phải tài liệu tham chiếu chính thức.
-- `i18n/` đã tồn tại và hiện trống; các bản dịch đang được lên kế hoạch nhưng chưa commit.
+## Ghi chú phát triển 📘
 
-## Tài Liệu và Lộ Trình
-Thư mục `docs/` chứa các ghi chú tiến hóa kỹ thuật theo từng giai đoạn:
+- Hiện tại repository chưa có hệ thống build thống nhất (`Makefile`, `platformio.ini`, `package.json`, ...).
+- Dòng phát triển hiện tại trải qua Arduino + Processing + KiCad + file CAD cơ khí.
+- `PCB/image_sensor/README.md` và `PCB/mcu/README.md` hiện mới chỉ mang tính placeholder/template, chưa phải nguồn chính thức.
+- `i18n/` chứa các bản README đã dịch; một số phần có thể chưa cập nhật đầy đủ so với nội dung tiếng Anh.
 
-| Tài liệu | Trọng tâm |
-|---|---|
-| [`docs/01-firmware-differencing.md`](../docs/01-firmware-differencing.md) | Temporal differencing/events chỉ bằng firmware |
-| [`docs/02-comparator-event-mode.md`](../docs/02-comparator-event-mode.md) | Phát hiện sự kiện có hỗ trợ comparator |
-| [`docs/03-bias-and-buffer-upgrade.md`](../docs/03-bias-and-buffer-upgrade.md) | Cải tiến analog front-end/bias |
-| [`docs/04-full-event-sensor-redesign.md`](../docs/04-full-event-sensor-redesign.md) | Tùy chọn tái thiết kế event-sensor dài hạn |
+## Khắc phục sự cố 🧯
 
-## Khắc Phục Sự Cố
 | Triệu chứng | Kiểm tra |
 |---|---|
-| Không nhận thẻ SD ở camera mode | Xác nhận dây nối và `cardPin` (`21` trong sketch hiện tại). Format lại thẻ SD (FAT/FAT32) và thử lại. |
-| Dữ liệu ảnh trống/nhiễu | Kiểm tra dây `OUTCOL`/`OUTROW` và chân điều khiển mux. Kiểm tra độ ổn định nguồn và kết nối bo cảm biến. |
-| Processing viewer không có dữ liệu | Xác nhận baud serial `115200` ở cả Arduino và Processing. Đổi `portName` từ `COM32` sang cổng thực tế của bạn. |
-| Chụp rất chậm | Đây là hành vi dự kiến với quét đầy đủ 32x32 và lấy trung bình (`avgCount=10` mặc định). |
+| Không phát hiện được thẻ SD trong chế độ camera | Kiểm tra wiring và `cardPin` (`21` trong sketch hiện tại). Định dạng lại thẻ SD (FAT/FAT32) rồi thử lại. |
+| Dữ liệu hình ảnh trống/nhiễu | Kiểm tra wiring `OUTCOL`/`OUTROW` và các chân điều khiển mux. Kiểm tra độ ổn định nguồn và kết nối board cảm biến. |
+| Processing viewer không hiển thị dữ liệu | Xác nhận serial baud `115200` trong cả Arduino và Processing. Đặt `portName` từ `COM32` sang đúng cổng của bạn. |
+| Chụp rất chậm | Đây là hành vi mong đợi với quét toàn cảnh 32x32 và trung bình (`avgCount=10` theo mặc định). |
 
-## Hỗ Trợ / Tài Trợ
-Từ header firmware:
+## Lộ trình và ghi chú kỹ thuật 🗺️
 
-- Creator: Sean Hodgins
-- YouTube: http://youtube.com/seanhodginsfilms
-- Patreon: https://patreon.com/seanhodgins
+Thư mục `docs/` theo dõi các hướng kỹ thuật dự kiến và khảo sát:
 
-Nếu bạn phát triển tiếp dự án này, hãy cân nhắc hỗ trợ tác giả gốc.
+| Tài liệu | Tập trung |
+|---|---|
+| [`docs/01-firmware-differencing.md`](../docs/01-firmware-differencing.md) | Temporal differencing / events chỉ qua firmware |
+| [`docs/02-comparator-event-mode.md`](../docs/02-comparator-event-mode.md) | Phát hiện events với comparator hỗ trợ |
+| [`docs/03-bias-and-buffer-upgrade.md`](../docs/03-bias-and-buffer-upgrade.md) | Cải thiện analog front-end và bias |
+| [`docs/04-full-event-sensor-redesign.md`](../docs/04-full-event-sensor-redesign.md) | Lựa chọn tái thiết kế event-sensor dài hạn |
 
-## Đóng Góp
-Hoan nghênh mọi đóng góp. Một số hướng đóng góp đề xuất:
+## Đóng góp 🤝
 
-- Ghi chú bring-up phần cứng và pin map đã được xác thực.
-- Xác thực toolchain/phiên bản (Arduino core, thư viện, phiên bản Processing).
-- Cập nhật tài liệu, đặc biệt là sơ đồ đi dây và quy trình hiệu chuẩn.
-- Bản dịch README trong `i18n/` khi danh sách ngôn ngữ mục tiêu được chốt.
+Đóng góp đều được chào đón. Một vài hướng đóng góp đề xuất:
 
-Với thay đổi tác động đến hành vi phần cứng hoặc firmware, vui lòng kèm theo:
-- Chi tiết môi trường kiểm thử.
-- Bối cảnh phiên bản bo mạch.
-- Ghi chú hành vi trước/sau.
+- Ghi chú bring-up phần cứng và bản đồ chân đã được xác thực.
+- Kiểm chứng toolchain/version (Arduino core, thư viện, phiên bản Processing).
+- Cập nhật tài liệu, đặc biệt là sơ đồ nối dây và quy trình hiệu chuẩn.
+- Dịch `README` trong `i18n/` sau khi hoàn thiện ngôn ngữ mục tiêu.
 
-## Giấy Phép
-- File giấy phép kho: [`LICENSE`](../LICENSE) (văn bản GPL-3.0 có trong repo).
-- Ghi chú header firmware: header `.ino` hiện ghi `cc-by-sa-nc-3.0`.
+Cho các thay đổi ảnh hưởng hành vi phần cứng hoặc firmware, hãy kèm:
+- Chi tiết thiết lập test.
+- Ngữ cảnh revision bo mạch.
+- Mô tả hành vi trước/sau.
 
-Lưu ý quan trọng: hai tín hiệu giấy phép này khác nhau. Cho đến khi maintainer làm rõ, hãy coi việc cấp phép cần xác nhận từ chủ dự án trước khi phân phối lại/sử dụng thương mại.
+## Giấy phép
 
-## Lời Cảm Ơn
-- Sean Hodgins / công trình dự án digiOBSCURA và tài liệu/video công khai.
-- Các nguồn lực cộng đồng open hardware và maker giúp các thử nghiệm cảm biến DIY trở nên khả thi.
+- `LICENSE` của repository hiện chỉ rõ dự án dùng giấy phép GPL-3.0 ở cấp repository.
+- Các comment phần đầu firmware cũng tham chiếu `CC BY-NC-SA 3.0` cho một phần nội dung.
+
+Khi phân phối lại binary, tài sản hardware hoặc bản phái sinh, hãy kiểm tra lại điều khoản cấp phép chính xác trong các file bạn chỉnh sửa để đảm bảo tương thích với mục đích sử dụng.
+
+
+## ❤️ Support
+
+| Donate | PayPal | Stripe |
+| --- | --- | --- |
+| [![Donate](https://camo.githubusercontent.com/24a4914f0b42c6f435f9e101621f1e52535b02c225764b2f6cc99416926004b7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d4c617a79696e674172742d3045413545393f7374796c653d666f722d7468652d6261646765266c6f676f3d6b6f2d6669266c6f676f436f6c6f723d7768697465)](https://chat.lazying.art/donate) | [![PayPal](https://camo.githubusercontent.com/d0f57e8b016517a4b06961b24d0ca87d62fdba16e18bbdb6aba28e978dc0ea21/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f50617950616c2d526f6e677a686f754368656e2d3030343537433f7374796c653d666f722d7468652d6261646765266c6f676f3d70617970616c266c6f676f436f6c6f723d7768697465)](https://paypal.me/RongzhouChen) | [![Stripe](https://camo.githubusercontent.com/1152dfe04b6943afe3a8d2953676749603fb9f95e24088c92c97a01a897b4942/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5374726970652d446f6e6174652d3633354246463f7374796c653d666f722d7468652d6261646765266c6f676f3d737472697065266c6f676f436f6c6f723d7768697465)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |

@@ -1,70 +1,98 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
 
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
 
-# digiOBSCURA - DIY 影像感測器與數位相機 📷
+# digiOBSCURA - 一套可自行打造的影像感測器與數位相機 📷
 
-[![License: CC BY-NC-SA 3.0 (firmware header)](https://img.shields.io/badge/Firmware%20Header-CC%20BY--NC--SA%203.0-lightgrey)](https://creativecommons.org/licenses/by-nc-sa/3.0/)
-[![Repo License](https://img.shields.io/badge/Repository%20License-GPL--3.0-blue)](../LICENSE)
-[![Project Type](https://img.shields.io/badge/Type-DIY%20Hardware%20%2B%20Firmware-orange)](#overview)
-[![Sensor](https://img.shields.io/badge/Sensor-32x32%20(1024px)-2ea44f)](#features)
-[![MCU](https://img.shields.io/badge/MCU-SAMD21G18A-1f6feb)](#hardwarefirmware-architecture-current)
+[![License: CC BY-NC-SA 3.0 (firmware header)](https://img.shields.io/badge/Firmware%20Header-CC%20BY--NC--SA%203.0-lightgrey?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+[![Repo License](https://img.shields.io/badge/Repository%20License-GPL--3.0-2563eb?style=for-the-badge)](./LICENSE)
+[![Project Type](https://img.shields.io/badge/Type-DIY%20Hardware%20%2B%20Firmware-f97316?style=for-the-badge)](#overview)
+[![Sensor](https://img.shields.io/badge/Sensor-32x32%20(1024px)-16a34a?style=for-the-badge)](#features)
+[![MCU](https://img.shields.io/badge/MCU-SAMD21G18A-1d4ed8?style=for-the-badge)](#hardware-firmware-architecture-current)
+[![Contributions](https://img.shields.io/badge/Contributions-Welcome-0f766e?style=for-the-badge&logo=github)](#contributing)
+[![GitHub Stars](https://img.shields.io/github/stars/lachlanchen/CustomSensor?style=for-the-badge)](https://github.com/lachlanchen/CustomSensor/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/lachlanchen/CustomSensor?style=for-the-badge)](https://github.com/lachlanchen/CustomSensor/issues)
 
-> 完整開放的 DIY 影像系統：自製感測器 PCB、MCU 板、韌體、webcam 檢視器，以及可列印外殼零件。
+> 一套完全開放的 DIY 成像方案：自訂感測器 PCB、MCU 板、韌體、Webcam 檢視器，以及可列印的外殼零件。
 
-<a id="overview"></a>
-## Overview
-`digiOBSCURA` 是一套 DIY 的 32x32 影像系統，核心由自製光電晶體陣列與 SAMD21 控制器組成。
+## 📚 目錄
 
-此儲存庫包含：
-- 可獨立運作並儲存至 SD 卡的相機韌體。
-- 搭配 Processing 草圖的韌體，用於序列埠 webcam 風格即時檢視。
-- 兩塊板卡（`image_sensor` 與 `mcu`）的完整 KiCad 原始檔與量產 Gerber。
-- 外殼／鏡頭／腳架元件的機構檔（`.f3d`、`.stl`）。
-- 位於 [`docs/`](../docs/) 的設計筆記與分階段升級路線圖文件。
+- [總覽](#總覽)
+- [示範](#示範)
+- [特性](#特性)
+- [專案結構](#專案結構)
+- [硬體/韌體架構（目前）](#硬體韌體架構目前)
+- [先決條件](#先決條件)
+- [安裝](#安裝)
+- [使用方式](#使用方式)
+- [設定說明](#設定說明)
+- [範例](#範例)
+- [開發備註](#開發備註)
+- [故障排除](#故障排除)
+- [路線圖與技術筆記](#路線圖與技術筆記)
+- [貢獻](#貢獻)
+- [Support](#%E2%9D%A4%EF%B8%8F-support)
+- [授權](#授權)
 
-### At a Glance
-| 區域 | 目前實作 |
-|---|---|
-| 影像陣列 | `32x32` 自製光電晶體矩陣（`1024` 像素） |
-| 多工切換 | `2 x ADG732`（列 + 行選擇） |
-| 控制器 | `SAMD21G18A` |
-| 相機輸出 | SD 卡 BMP 檔（`DGO_0000.bmp`，自動遞增） |
-| 即時模式 | 序列埠（`115200`）+ Processing 主機端渲染 |
-| 設計資產 | KiCad + Gerbers + BOM 成果 + `F3D`/`STL` 檔案 |
+## 總覽 🛰️
 
-## Demo (Canonical Existing Content) 🎬
-請看影片：  
+`digiOBSCURA` 是一個以自訂光電晶體陣列與 SAMD21 控制器為核心的 DIY 32x32 成像系統。
+
+本專案包含：
+- 用於單機拍攝並輸出到 SD 卡的韌體。
+- 用於串列視訊、即時 webcam 風格預覽的韌體 + Processing 草圖。
+- 兩塊板子（`image_sensor` 與 `mcu`）的完整 KiCad 原始檔，以及量產 Gerber 檔。
+- 外殼、鏡頭、腳架等機構元件的機械資源（`.f3d`、`.stl`）。
+- 設計筆記與分階段升級路線文件，位於 [`docs/`](./docs/)。
+
+## 快速摘要 📌
+
+| 項目 | 說明 |
+| --- | --- |
+| 專案規模 | 相機 + 韌體 + 檢視器 + 機構設計 |
+| 感測器陣列 | `32x32`（`1024`）自訂光電晶體矩陣 |
+| 核心控制器 | `SAMD21G18A` |
+| 影像輸出 | SD 卡 BMP / 串列即時影格串流 |
+| 目標工作流程 | 單機擷取 • Webcam 風格預覽 |
+
+## 示範 🎬
+
+查看影片：
+
 [![digiOBSCURA Video](https://img.youtube.com/vi/PaXweP73NT4/0.jpg)](https://youtu.be/PaXweP73NT4)
 
-兩塊板卡的 BOM 在此： https://www.findchips.com/org/10-open-hardware/list/162969-digiobscura-diy-image-sensor-and-digital-camera
+於此查看兩塊板子的 BOM： https://www.findchips.com/org/10-open-hardware/list/162969-digiobscura-diy-image-sensor-and-digital-camera
 
-<a id="features"></a>
-## Features
-- 32x32（1024 像素）自製光電晶體影像陣列。
-- 使用雙 ADG732 mux 進行行／列像素選址。
-- 獨立相機工作流程：
-  - OLED UI。
+## 特性 ✨
+
+- 32x32（1024 像素）自訂光電晶體成像陣列。
+- 使用雙 ADG732 多工器進行列/欄像素選取。
+- 單機相機流程：
+  - OLED 狀態介面。
   - 快門輸入。
-  - SD 卡輸出（`DGO_0000.bmp`，自動遞增）。
-- Webcam 工作流程：
-  - Arduino 韌體以 `115200` 回應序列埠像素請求。
-  - Processing 應用程式渲染 32x32 灰階即時畫面。
+  - SD 卡輸出（`DGO_####.bmp`，自動遞增）。
+- Webcam 流程：
+  - Arduino 韌體會在 `115200` 回應像素串列讀取請求。
+  - Processing 應用程式渲染 32x32 即時灰階影像。
 - 開放硬體原始資料：
-  - KiCad 原理圖／PCB。
+  - KiCad 電路圖/PCB。
   - 量產輸出與 BOM 成果。
   - 可列印機構檔案。
 
-## Project Structure
+## 專案結構 🧱
 
 ```text
 CustomSensor/
 |- README.md
 |- LICENSE
 |- Firmware/
-|  |- digiOBSCURA_camera/digiOBSCURA_camera.ino
-|  |- digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino
-|  `- digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde
+|  |- digiOBSCURA_camera/
+|  |  |- digiOBSCURA_camera.ino
+|  |- digiOBSCURA_Webcam_Arduino/
+|  |  |- digiOBSCURA_Webcam_Arduino.ino
+|  `- digiOBSCURA_Webcam_Processing/
+|     `- digiOBSCURA_Webcam_Processing.pde
 |- docs/
 |  |- overview.md
 |  |- 01-firmware-differencing.md
@@ -73,163 +101,183 @@ CustomSensor/
 |  `- 04-full-event-sensor-redesign.md
 |- PCB/
 |  |- image_sensor/
+|  |  |- digiobscura.kicad_pcb
+|  |  |- digiobscura.sch
+|  |  |- sym-lib-table
+|  `- fp-lib-table
 |  `- mcu/
+|     |- digiobscura_mcu.kicad_pcb
+|     |- digiobscura_mcu.sch
+|     |- sym-lib-table
+|     `- fp-lib-table
 |- PCB-Production/
 |- F3D/
 |- STL/
 |- logo/
-`- i18n/
+|- i18n/
+|- .auto-readme-work/
+|  |- pipeline-context.md
+|  `- repo-structure-analysis.md
+`- .git
 ```
 
-<a id="hardwarefirmware-architecture-current"></a>
-## Hardware/Firmware Architecture (Current)
-根據 [`docs/overview.md`](../docs/overview.md)：
+## 硬體/韌體架構（目前） 🧰
 
-| 子系統 | 細節 |
+基於 [`docs/overview.md`](./docs/overview.md)：
+
+| 子系統 | 說明 |
 |---|---|
 | 感測器矩陣 | `1024 x ALS-PT19` 光電晶體 |
-| 定址 | `2 x ADG732` 類比 mux（列 + 行） |
+| 位址設定 | `2 x ADG732` 類比多工器（列 + 欄） |
 | 核心板 | `SAMD21G18A` |
 | 電源路徑 | `18650` 電池、`MCP73831` 充電器、`3.3 V` 穩壓 |
-| 訊號路徑 | MCU GPIO 將 `OUTCOL` 拉高；被選中的感測器路徑由 ADC 在 `OUTROW` 讀取 |
+| 訊號路徑 | MCU GPIO 將 `OUTCOL` 拉高；所選感測通道透過 ADC 在 `OUTROW` 讀取 |
 | 擷取行為 | 相機韌體執行全畫面掃描並寫入 24-bit BMP 檔 |
 
-## Prerequisites
+## 先決條件 🧰
 
-### Hardware
-- 已組裝的 `image_sensor` 與 `mcu` 板（或等效配線）。
-- 與韌體腳位配置相符的 SAMD21 相容目標板。
+### 硬體
+
+- 已組裝完成的 `image_sensor` 與 `mcu` 板（或等效接線）。
+- 與韌體使用相同腳位配置的 SAMD21 相容目標板。
 - MicroSD 卡（相機模式）。
-- 64x48 SSD1306 OLED（相機模式，現行草圖為 4 線軟體 SPI）。
-- 快門按鈕／開關輸入。
+- `64x48` SSD1306 OLED（相機模式，當前草稿採用 4 線軟體 SPI）。
+- 快門按鈕/開關輸入。
 
-### Software
-- Arduino IDE（或 Arduino CLI）與 SAMD21 板套件。
-- 相機韌體所需 Arduino 函式庫：
+### 軟體
+
+- 安裝有 SAMD21 板卡套件的 Arduino IDE（或 Arduino CLI）。
+- 相機韌體需要的 Arduino 函式庫：
   - `U8g2`
   - `SPI`
   - `SD`
-- [`Firmware/digiOBSCURA_Webcam_Processing`](../Firmware/digiOBSCURA_Webcam_Processing/) 的 Processing IDE/runtime。
+- Processing IDE/執行環境（用於 [`Firmware/digiOBSCURA_Webcam_Processing`](./Firmware/digiOBSCURA_Webcam_Processing/)。
 
-## Installation
+## 安裝 🧩
 
-1. 複製此儲存庫：
+1. 複製本專案：
 
 ```bash
-git clone https://github.com/<your-org-or-user>/CustomSensor.git
+
+git clone https://github.com/lachlanchen/CustomSensor.git
 cd CustomSensor
 ```
 
-2. 在 Arduino IDE 開啟其中一個韌體草圖：
-- 相機模式：[`Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino`](../Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino)
-- Webcam 模式：[`Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino`](../Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino)
+2. 在 Arduino IDE 開啟其中一個韌體草稿：
+- 相機模式：[`Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino`](./Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino)
+- Webcam 模式：[`Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino`](./Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino)
 
-3. 選擇正確的 SAMD21 板子與連接埠並上傳。
+3. 選擇正確的 SAMD21 板卡與埠並上傳。
 
-4. 若為 webcam 模式，開啟 Processing 草圖：
-- [`Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde`](../Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde)
+4. Webcam 模式下，開啟 Processing 草稿：
+- [`Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde`](./Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde)
 
-## Usage
+## 使用方式 🚀
 
-### Camera Mode (SD snapshot workflow) 📸
-1. 燒錄 `digiOBSCURA_camera.ino`。
-2. 插入 SD 卡。
-3. 開機時，韌體會檢查檔名並找到下一個可用的 `DGO_####.bmp`。
-4. 按下快門輸入。
-5. 裝置擷取影像、寫入 BMP 到 SD，並在 OLED 顯示縮圖預覽。
+### 相機模式（SD 快照流程） 📸
 
-### Webcam Mode (host-rendered live view) 🖥️
-1. 燒錄 `digiOBSCURA_Webcam_Arduino.ino`。
-2. 透過 USB 序列埠連線（`115200`）。
-3. 在 Processing 草圖中設定正確序列埠（目前檔案為 `String portName = "COM32"`）。
-4. 執行 Processing 草圖以輪詢像素值並繪製 32x32 畫面。
+1. 上傳 `digiOBSCURA_camera.ino`。
+2. 插入已格式化為 FAT/FAT32 的 SD 卡。
+3. 上電/重置板卡；韌體會搜尋下一個可用的 `DGO_####.bmp` 檔名。
+4. 以快門輸入觸發拍攝。
+5. 裝置拍攝後將 BMP 寫入 SD，並在 OLED 顯示縮圖預覽。
 
-## Configuration Notes
-目前原始碼中的韌體預設值：
+### Webcam 模式（主機端即時檢視） 🖥️
 
-| 設定 | 目前值／行為 |
+1. 上傳 `digiOBSCURA_Webcam_Arduino.ino`。
+2. 以 `115200` 連上 USB 串列。
+3. 在 Processing 草稿中將 `String portName` 設為實際序列埠（範例使用 `COM32`）。
+4. 執行 Processing 草稿，它會輪詢 32x32 像素並渲染即時灰階影格。
+
+## 設定說明 🛠️
+
+目前韌體層級預設值如下：
+
+| 設定 | 目前值 / 行為 |
 |---|---|
 | 解析度 | 固定 `32x32` |
 | ADC 解析度 | `analogReadResolution(12)` |
-| 相機模式平均 | `avgCount = 10`（提升畫質、降低幀速） |
-| SD CS 腳位（camera 草圖） | `cardPin = 21` |
-| 序列傳輸率（webcam 路徑） | `115200` |
-| I/O 對應 | 硬編碼陣列／變數（`SCOL`, `SROW`, `WR`, `CS`, `EN`, `OUTCOL`, `OUTROW` 等） |
+| 相機模式平均值 | `avgCount = 10`（高品質、較低影格速度） |
+| SD CS 腳位（相機草稿） | `cardPin = 21` |
+| 串列鮑率（webcam 路徑） | `115200` |
+| I/O 映射 | 硬編碼陣列/變數（`SCOL`、`SROW`、`WR`、`CS`、`EN`、`OUTCOL`、`OUTROW` 等） |
 
-如果你的硬體配線不同，燒錄前請先更新每個 `.ino` 檔案開頭附近的腳位定義。
+如果你的接線不同，請在每個 `.ino` 檔案頂端更新腳位定義後再進行上傳。
 
-## Examples
+## 範例 🧪
 
-### Open and edit the camera firmware
+### 開啟並編輯相機韌體
+
 ```bash
 cd Firmware/digiOBSCURA_camera
 # open digiOBSCURA_camera.ino in Arduino IDE
 ```
 
-### Open and edit the Processing webcam viewer
+### 開啟並編輯 Processing webcam 檢視器
+
 ```bash
 cd Firmware/digiOBSCURA_Webcam_Processing
 # open digiOBSCURA_Webcam_Processing.pde in Processing IDE
 ```
 
-### Open PCB sources in KiCad
+### 在 KiCad 開啟 PCB 原始檔
+
 - `PCB/image_sensor/digiobscura.sch`
 - `PCB/image_sensor/digiobscura.kicad_pcb`
 - `PCB/mcu/digiobscura_mcu.sch`
 - `PCB/mcu/digiobscura_mcu.kicad_pcb`
 
-## Development Notes
-- 此儲存庫目前沒有統一建置系統（`Makefile`、`platformio.ini`、`package.json` 等）。
-- 目前開發橫跨 Arduino + Processing + KiCad + 機構 CAD 檔案。
-- `PCB/image_sensor/README.md` 與 `PCB/mcu/README.md` 看起來較舊／偏模板化，目前不是權威文件。
-- `i18n/` 已存在，翻譯文件正在逐步加入。
+## 開發備註 📘
 
-## Documentation and Roadmap
-`docs/` 目錄包含分階段的技術演進筆記：
+- 本專案目前沒有統一建置系統（`Makefile`、`platformio.ini`、`package.json` 等）。
+- 開發涵蓋 Arduino + Processing + KiCad + 機構 CAD 檔。
+- `PCB/image_sensor/README.md` 與 `PCB/mcu/README.md` 目前是樣板或占位內容，並非權威依據。
+- `i18n/` 包含 README 的翻譯版本；部分內容未完整，可能落後英文版。
+
+## 故障排除 🧯
+
+| 現象 | 檢查 |
+|---|---|
+| 相機模式無法偵測到 SD 卡 | 確認接線與 `cardPin`（目前草稿為 `21`）是否正確。重新格式化 SD 卡（FAT/FAT32）後再試。 |
+| 影像空白/噪點偏多 | 確認 `OUTCOL`/`OUTROW` 接線與多工控制腳位。檢查供電穩定性與感測板連接。 |
+| Processing 檢視器無資料 | 確認 Arduino 與 Processing 的 `115200` 串列鮑率一致。將 `portName` 從 `COM32` 改為實際埠號。 |
+| 擷取速度非常慢 | 完整 32x32 掃描與平均運算（預設 `avgCount=10`）屬正常行為。 |
+
+## 路線圖與技術筆記 🗺️
+
+`docs/` 目錄追蹤規劃中的技術方向與探索方向：
 
 | 文件 | 重點 |
 |---|---|
-| [`docs/01-firmware-differencing.md`](../docs/01-firmware-differencing.md) | 僅韌體的時間差分／事件偵測 |
-| [`docs/02-comparator-event-mode.md`](../docs/02-comparator-event-mode.md) | 以比較器輔助的事件偵測 |
-| [`docs/03-bias-and-buffer-upgrade.md`](../docs/03-bias-and-buffer-upgrade.md) | 類比前端／偏壓改善 |
-| [`docs/04-full-event-sensor-redesign.md`](../docs/04-full-event-sensor-redesign.md) | 長期事件感測器重設計選項 |
+| [`docs/01-firmware-differencing.md`](./docs/01-firmware-differencing.md) | 僅韌體的時間差分 / 事件 |
+| [`docs/02-comparator-event-mode.md`](./docs/02-comparator-event-mode.md) | 比較器輔助事件偵測 |
+| [`docs/03-bias-and-buffer-upgrade.md`](./docs/03-bias-and-buffer-upgrade.md) | 類比前端與偏壓改進 |
+| [`docs/04-full-event-sensor-redesign.md`](./docs/04-full-event-sensor-redesign.md) | 中長期事件感測器重設計選項 |
 
-## Troubleshooting
-| 症狀 | 檢查項目 |
-|---|---|
-| 相機模式偵測不到 SD 卡 | 確認配線與 `cardPin`（現行草圖為 `21`）。將 SD 卡重格式化為 FAT/FAT32 後重試。 |
-| 影像資料空白／雜訊大 | 檢查 `OUTCOL`/`OUTROW` 配線與 mux 控制腳位。確認供電完整性與感測器板連接。 |
-| Processing 檢視器沒有資料 | 確認 Arduino 與 Processing 兩端皆為 `115200`。把 `portName` 從 `COM32` 改成你的實際連接埠。 |
-| 擷取速度很慢 | 屬於預期行為：完整 32x32 掃描加上平均（預設 `avgCount=10`）。 |
+## 貢獻 🤝
 
-## Support / Sponsor
-來自韌體標頭：
+歡迎提出貢獻，建議方向如下：
 
-- Creator: Sean Hodgins
-- YouTube: http://youtube.com/seanhodginsfilms
-- Patreon: https://patreon.com/seanhodgins
-
-如果你基於此專案延伸開發，可考慮支持原作者。
-
-## Contributing
-歡迎貢獻。建議貢獻方向：
-
-- 硬體 bring-up 筆記與已驗證腳位圖。
+- 硬體上電檢查與已驗證的腳位對照表。
 - 工具鏈／版本驗證（Arduino core、函式庫、Processing 版本）。
-- 文件更新，特別是配線圖與校正流程。
-- `i18n/` README 翻譯（語言目標定案後）。
+- 文件更新，尤其是接線圖與校正流程。
+- 待語言目標確定後，補齊 `i18n/` 的 README 翻譯。
 
-若變更涉及硬體或韌體行為，請附上：
-- 測試環境細節。
+如果修改涉及硬體或韌體行為，請附上：
+- 測試設定明細。
 - 板卡版本資訊。
-- 變更前後行為說明。
+- 前後行為差異紀錄。
 
-## License
-- 儲存庫授權檔：[`LICENSE`](../LICENSE)（儲存庫內有 GPL-3.0 文字）。
-- 韌體標頭註記：目前 `.ino` 標頭標示 `cc-by-sa-nc-3.0`。
+## 授權
 
-重要說明：這兩個授權訊號彼此不同。維護者尚未釐清前，請視為需要專案擁有者確認後再進行再散布／商業使用。
+- 本專案倉儲中的 `LICENSE` 目前指出整體專案採用 GPL-3.0 發佈。
+- 固件標頭註解亦提及部分原始碼頭部內容採用 `CC BY-NC-SA 3.0`。
 
-## Acknowledgements
-- Sean Hodgins / digiOBSCURA 專案成果與公開文件／影片。
-- 讓 DIY 感測器實驗成為可能的開放硬體與 maker 社群資源。
+當你重新散佈二進位、硬體成果或衍生作品時，請先確認所變更檔案的授權條件，並確認與你的用途是否兼容。
+
+
+## ❤️ Support
+
+| Donate | PayPal | Stripe |
+| --- | --- | --- |
+| [![Donate](https://camo.githubusercontent.com/24a4914f0b42c6f435f9e101621f1e52535b02c225764b2f6cc99416926004b7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d4c617a79696e674172742d3045413545393f7374796c653d666f722d7468652d6261646765266c6f676f3d6b6f2d6669266c6f676f436f6c6f723d7768697465)](https://chat.lazying.art/donate) | [![PayPal](https://camo.githubusercontent.com/d0f57e8b016517a4b06961b24d0ca87d62fdba16e18bbdb6aba28e978dc0ea21/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f50617950616c2d526f6e677a686f754368656e2d3030343537433f7374796c653d666f722d7468652d6261646765266c6f676f3d70617970616c266c6f676f436f6c6f723d7768697465)](https://paypal.me/RongzhouChen) | [![Stripe](https://camo.githubusercontent.com/1152dfe04b6943afe3a8d2953676749603fb9f95e24088c92c97a01a897b4942/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5374726970652d446f6e6174652d3633354246463f7374796c653d666f722d7468652d6261646765266c6f676f3d737472697065266c6f676f436f6c6f723d7768697465)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |

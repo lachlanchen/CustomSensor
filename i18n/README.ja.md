@@ -1,67 +1,98 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
 
-# digiOBSCURA - DIY イメージセンサー & デジタルカメラ 📷
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
 
-[![License: CC BY-NC-SA 3.0 (firmware header)](https://img.shields.io/badge/Firmware%20Header-CC%20BY--NC--SA%203.0-lightgrey)](https://creativecommons.org/licenses/by-nc-sa/3.0/)
-[![Repo License](https://img.shields.io/badge/Repository%20License-GPL--3.0-blue)](./LICENSE)
-[![Project Type](https://img.shields.io/badge/Type-DIY%20Hardware%20%2B%20Firmware-orange)](#概要)
-[![Sensor](https://img.shields.io/badge/Sensor-32x32%20(1024px)-2ea44f)](#機能)
-[![MCU](https://img.shields.io/badge/MCU-SAMD21G18A-1f6feb)](#ハードウェアファームウェア-アーキテクチャ現行)
+# digiOBSCURA - DIY画像センサーとデジタルカメラ 📷
 
-> 完全にオープンな DIY イメージングスタック: カスタムセンサー PCB、MCU ボード、ファームウェア、ウェブカムビューア、3D プリント可能な筐体パーツ。
+[![License: CC BY-NC-SA 3.0 (firmware header)](https://img.shields.io/badge/Firmware%20Header-CC%20BY--NC--SA%203.0-lightgrey?style=for-the-badge)](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+[![Repo License](https://img.shields.io/badge/Repository%20License-GPL--3.0-2563eb?style=for-the-badge)](./LICENSE)
+[![Project Type](https://img.shields.io/badge/Type-DIY%20Hardware%20%2B%20Firmware-f97316?style=for-the-badge)](#overview)
+[![Sensor](https://img.shields.io/badge/Sensor-32x32%20(1024px)-16a34a?style=for-the-badge)](#features)
+[![MCU](https://img.shields.io/badge/MCU-SAMD21G18A-1d4ed8?style=for-the-badge)](#hardware-firmware-architecture-current)
+[![Contributions](https://img.shields.io/badge/Contributions-Welcome-0f766e?style=for-the-badge&logo=github)](#contributing)
+[![GitHub Stars](https://img.shields.io/github/stars/lachlanchen/CustomSensor?style=for-the-badge)](https://github.com/lachlanchen/CustomSensor/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/lachlanchen/CustomSensor?style=for-the-badge)](https://github.com/lachlanchen/CustomSensor/issues)
 
-## 概要
-`digiOBSCURA` は、カスタムのフォトトランジスタアレイと SAMD21 ベースのコントローラで構成された DIY 32x32 イメージングシステムです。
+> 完全にオープンなDIYイメージングスタック：カスタムセンサ基板、MCUボード、ファームウェア、ウェブカム風ビューア、印刷可能な筐体部品で構成されています。
 
-このリポジトリには以下が含まれます:
-- SD カードへの単体カメラ撮影用ファームウェア。
-- シリアル経由のウェブカム風ライブ表示用ファームウェア + Processing スケッチ。
-- 2 つのボード（`image_sensor` と `mcu`）向け KiCad 完全ソースと製造用 Gerber。
-- 筐体・レンズ・三脚コンポーネント用の機構アセット（`.f3d`, `.stl`）。
-- [`docs/`](./docs/) にある設計ノートと段階的アップグレードのロードマップ文書。
+## 📚 目次
 
-### 早見表
-| 領域 | 現在の実装 |
-|---|---|
-| イメージングアレイ | `32x32` カスタムフォトトランジスタマトリクス（`1024` ピクセル） |
-| 多重化 | `2 x ADG732`（行 + 列選択） |
-| コントローラ | `SAMD21G18A` |
-| カメラ出力 | SD カード BMP ファイル（`DGO_0000.bmp`、自動インクリメント） |
-| ライブモード | シリアル（`115200`）+ Processing ホストレンダラ |
-| 設計アセット | KiCad + Gerber + BOM 成果物 + `F3D`/`STL` ファイル |
+- [概要](#概要)
+- [デモ](#デモ)
+- [特徴](#特徴)
+- [プロジェクト構成](#プロジェクト構成)
+- [ハードウェア/ファームウェア構成（現行）](#ハードウェアファームウェア構成現行)
+- [前提条件](#前提条件)
+- [インストール](#インストール)
+- [使い方](#使い方)
+- [設定ノート](#設定ノート)
+- [例](#例)
+- [開発ノート](#開発ノート)
+- [トラブルシューティング](#トラブルシューティング)
+- [ロードマップと技術ノート](#ロードマップと技術ノート)
+- [コントリビュート](#コントリビュート)
+- [サポート](#%E2%9D%A4%EF%B8%8F-support)
+- [ライセンス](#ライセンス)
 
-## デモ（既存の正準コンテンツ） 🎬
-動画はこちら:  
+## 概要 🛰️
+
+`digiOBSCURA` は、カスタムフォトトランジスタアレイとSAMD21ベースのコントローラーを中心に構成されたDIY 32x32イメージングシステムです。
+
+このリポジトリには以下が含まれます。
+- SDカードへの単体撮影向けファームウェア。
+- シリアル経由でライブ表示するためのファームウェア + Processingスケッチ。
+- 両ボード（`image_sensor` と `mcu`）のKiCad完全ソースと製造用ガーバーデータ。
+- エンクロージャ、レンズ、三脚部品の機械設計データ（`.f3d`, `.stl`）。
+- `docs/` にある設計ノートおよび段階的アップグレードのロードマップ。
+
+## クイックスナップショット 📌
+
+| 項目 | 詳細 |
+| --- | --- |
+| プロジェクト構成 | カメラ + ファームウェア + ビューア + 機械設計 |
+| センサーアレイ | `32x32`（`1024`）のカスタムフォトトランジスタマトリクス |
+| 中核コントローラー | `SAMD21G18A` |
+| 画像出力 | SDカードBMP / シリアルライブフレーム |
+| 対象ワークフロー | 単体撮影 • ウェブカム風プレビュー |
+
+## デモ 🎬
+
+動画をチェック：
+
 [![digiOBSCURA Video](https://img.youtube.com/vi/PaXweP73NT4/0.jpg)](https://youtu.be/PaXweP73NT4)
 
-両ボードの BOM: https://www.findchips.com/org/10-open-hardware/list/162969-digiobscura-diy-image-sensor-and-digital-camera
+両方の基板のBOMはここにあります: https://www.findchips.com/org/10-open-hardware/list/162969-digiobscura-diy-image-sensor-and-digital-camera
 
-## 機能
-- 32x32（1024 ピクセル）カスタムフォトトランジスタ・イメージングアレイ。
-- 行/列ピクセル選択向けデュアル ADG732 MUX アドレッシング。
+## 特徴 ✨
+
+- 32x32（1024ピクセル）のカスタムフォトトランジスタイメージングアレイ。
+- 行・列ピクセル選択のための2つのADG732マルチプレクサアドレッシング。
 - 単体カメラワークフロー:
-  - OLED UI。
+  - OLEDステータスUI。
   - シャッター入力。
-  - SD カード出力（`DGO_0000.bmp`、自動インクリメント）。
+  - SDカード出力（`DGO_####.bmp`、自動インクリメント）。
 - ウェブカムワークフロー:
-  - Arduino ファームウェアが `115200` でシリアルピクセル要求に応答。
-  - Processing アプリが 32x32 グレースケールのライブビューを描画。
+  - Arduinoファームウェアが `115200` のシリアルピクセル要求に応答。
+  - Processingアプリが32x32グレースケールライブビューをレンダリング。
 - オープンハードウェアソース:
-  - KiCad 回路図/PCB。
-  - 製造出力と BOM 成果物。
-  - 印刷可能な機構ファイル。
+  - KiCadの回路図/PCB。
+  - 製造成果物とBOMアーティファクト。
+  - 印刷可能な機械設計データ。
 
-## プロジェクト構成
+## プロジェクト構成 🧱
 
 ```text
 CustomSensor/
 |- README.md
 |- LICENSE
 |- Firmware/
-|  |- digiOBSCURA_camera/digiOBSCURA_camera.ino
-|  |- digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino
-|  `- digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde
+|  |- digiOBSCURA_camera/
+|  |  |- digiOBSCURA_camera.ino
+|  |- digiOBSCURA_Webcam_Arduino/
+|  |  |- digiOBSCURA_Webcam_Arduino.ino
+|  `- digiOBSCURA_Webcam_Processing/
+|     `- digiOBSCURA_Webcam_Processing.pde
 |- docs/
 |  |- overview.md
 |  |- 01-firmware-differencing.md
@@ -70,162 +101,184 @@ CustomSensor/
 |  `- 04-full-event-sensor-redesign.md
 |- PCB/
 |  |- image_sensor/
+|  |  |- digiobscura.kicad_pcb
+|  |  |- digiobscura.sch
+|  |  |- sym-lib-table
+|  |  `- fp-lib-table
 |  `- mcu/
+|     |- digiobscura_mcu.kicad_pcb
+|     |- digiobscura_mcu.sch
+|     |- sym-lib-table
+|     `- fp-lib-table
 |- PCB-Production/
 |- F3D/
 |- STL/
 |- logo/
-`- i18n/
+|- i18n/
+|- .auto-readme-work/
+|  |- pipeline-context.md
+|  `- repo-structure-analysis.md
+`- .git
 ```
 
-## ハードウェア/ファームウェア アーキテクチャ（現行）
-[`docs/overview.md`](./docs/overview.md) に基づく:
+## ハードウェア/ファームウェア構成（現行） 🧰
+
+[`docs/overview.md`](./docs/overview.md) を基にしています。
 
 | サブシステム | 詳細 |
 |---|---|
 | センサーマトリクス | `1024 x ALS-PT19` フォトトランジスタ |
-| アドレッシング | `2 x ADG732` アナログ MUX（行 + 列） |
-| コアボード | `SAMD21G18A` |
-| 電源系 | `18650` バッテリー、`MCP73831` 充電器、`3.3 V` レギュレーション |
-| 信号経路 | `OUTCOL` は MCU GPIO により High 駆動。選択されたセンサーパスを `OUTROW` で ADC 読み取り |
-| 撮影動作 | カメラファームウェアはフルフレーム走査を行い、24-bit BMP を書き込み |
+| アドレッシング | `2 x ADG732` アナログマルチプレクサ（行 + 列） |
+| 中核ボード | `SAMD21G18A` |
+| 電源系統 | `18650` バッテリー、`MCP73831` チャージャ、`3.3 V` レギュレーション |
+| 信号系統 | `OUTCOL` はMCU GPIOでHIGH駆動され、選択されたセンサーパスは `OUTROW` でADC経由で読み取られます |
+| キャプチャ動作 | カメラファームウェアが全フレームを走査し、24bit BMPファイルを書き込みます |
 
-## 前提条件
+## 前提条件 🧰
 
 ### ハードウェア
-- 組み立て済みの `image_sensor` および `mcu` ボード（または同等配線）。
-- ファームウェアで使用されるピン割り当てに一致する SAMD21 互換ターゲットボード。
-- MicroSD カード（カメラモード）。
-- 64x48 SSD1306 OLED（カメラモード、現行スケッチでは 4 線式ソフトウェア SPI）。
+
+- 組み立て済みの `image_sensor` と `mcu` ボード（または同等の配線）。
+- ファームウェアで想定されるピン配置に一致するSAMD21互換ターゲットボード。
+- MicroSDカード（カメラモード）。
+- `64x48` SSD1306 OLED（カメラモード、現在のスケッチでは4線ソフトSPI）。
 - シャッターボタン/スイッチ入力。
 
 ### ソフトウェア
-- SAMD21 ボードパッケージを導入した Arduino IDE（または Arduino CLI）。
-- カメラファームウェアに必要な Arduino ライブラリ:
+
+- Arduino IDE（またはArduino CLI）とSAMD21ボードパッケージ。
+- カメラファームウェアに必要なArduinoライブラリ：
   - `U8g2`
   - `SPI`
   - `SD`
-- [`Firmware/digiOBSCURA_Webcam_Processing`](./Firmware/digiOBSCURA_Webcam_Processing/) 用の Processing IDE/runtime。
+- Processing IDE/ランタイム（[`Firmware/digiOBSCURA_Webcam_Processing`](./Firmware/digiOBSCURA_Webcam_Processing/)）。
 
-## インストール
+## インストール 🧩
 
-1. このリポジトリをクローン:
+1. このリポジトリをクローンします。
 
 ```bash
-git clone https://github.com/<your-org-or-user>/CustomSensor.git
+
+git clone https://github.com/lachlanchen/CustomSensor.git
 cd CustomSensor
 ```
 
-2. Arduino IDE でいずれかのファームウェアスケッチを開く:
+2. Arduino IDEで1つのファームウェアスケッチを開きます。
 - カメラモード: [`Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino`](./Firmware/digiOBSCURA_camera/digiOBSCURA_camera.ino)
 - ウェブカムモード: [`Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino`](./Firmware/digiOBSCURA_Webcam_Arduino/digiOBSCURA_Webcam_Arduino.ino)
 
-3. 正しい SAMD21 ボード/ポートを選択して書き込み。
+3. 正しいSAMD21ボードとポートを選択し、アップロードします。
 
-4. ウェブカムモードでは Processing スケッチを開く:
+4. ウェブカムモードではProcessingスケッチを開きます。
 - [`Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde`](./Firmware/digiOBSCURA_Webcam_Processing/digiOBSCURA_Webcam_Processing.pde)
 
-## 使い方
+## 使い方 🚀
 
-### カメラモード（SD スナップショットワークフロー） 📸
-1. `digiOBSCURA_camera.ino` を書き込む。
-2. SD カードを挿入。
-3. 起動時にファームウェアがファイル名を確認し、次に利用可能な `DGO_####.bmp` を探す。
-4. シャッター入力を押す。
-5. デバイスが撮影し、BMP を SD に保存して OLED にサムネイルプレビューを表示。
+### カメラモード（SDスナップショット） 📸
 
-### ウェブカムモード（ホストレンダリングのライブビュー） 🖥️
-1. `digiOBSCURA_Webcam_Arduino.ino` を書き込む。
-2. USB シリアル（`115200`）で接続。
-3. Processing スケッチで正しいシリアルポートを設定（現在のファイルでは `String portName = "COM32"`）。
-4. Processing スケッチを実行し、ピクセル値をポーリングして 32x32 フレームを描画。
+1. `digiOBSCURA_camera.ino` を書き込みます。
+2. FAT/FAT32でフォーマットしたSDカードを挿入します。
+3. 電源投入/リセットします。ファームウェアが次に使える `DGO_####.bmp` ファイル名を探します。
+4. シャッター入力で撮影をトリガーします。
+5. デバイスがキャプチャしてBMPをSDへ書き込み、OLEDでサムネイルを表示します。
 
-## 設定メモ
-ソースコード上の現行ファームウェア既定値:
+### ウェブカムモード（ホスト描画ライブビュー） 🖥️
 
-| 設定 | 現在の値 / 動作 |
+1. `digiOBSCURA_Webcam_Arduino.ino` を書き込みます。
+2. USBシリアルを `115200` で接続します。
+3. Processingスケッチで `String portName` を実際のシリアルポートに設定します（テンプレートは `COM32` を使用）。
+4. Processingスケッチを実行します。`32x32` ピクセルをポーリングして、グレースケールのライブフレームをレンダリングします。
+
+## 設定ノート 🛠️
+
+現在のファームウェア既定値は次の通りです。
+
+| 設定 | 現在の値 / 挙動 |
 |---|---|
 | 解像度 | 固定 `32x32` |
-| ADC 分解能 | `analogReadResolution(12)` |
-| カメラモード平均化 | `avgCount = 10`（画質向上、フレーム速度低下） |
-| SD CS ピン（カメラスケッチ） | `cardPin = 21` |
+| ADC分解能 | `analogReadResolution(12)` |
+| カメラモード平均化 | `avgCount = 10`（品質重視、フレーム速度低下） |
+| SD CSピン（カメラスケッチ） | `cardPin = 21` |
 | シリアルボーレート（ウェブカム経路） | `115200` |
-| I/O マッピング | ハードコードされた配列/変数（`SCOL`, `SROW`, `WR`, `CS`, `EN`, `OUTCOL`, `OUTROW` など） |
+| I/Oマッピング | 固定配列/変数（`SCOL`, `SROW`, `WR`, `CS`, `EN`, `OUTCOL`, `OUTROW` など） |
 
-ハードウェア配線が異なる場合は、書き込み前に各 `.ino` ファイル冒頭付近のピン定義を更新してください。
+配線が異なる場合は、各 `.ino` ファイル先頭付近のピン定義を更新してから書き込みを行ってください。
 
-## 例
+## 例 🧪
 
-### カメラファームウェアを開いて編集
+### カメラファームウェアを開いて編集する
+
 ```bash
 cd Firmware/digiOBSCURA_camera
 # open digiOBSCURA_camera.ino in Arduino IDE
 ```
 
-### Processing のウェブカムビューアを開いて編集
+### Processingウェブカムビューアを開いて編集する
+
 ```bash
 cd Firmware/digiOBSCURA_Webcam_Processing
 # open digiOBSCURA_Webcam_Processing.pde in Processing IDE
 ```
 
-### KiCad で PCB ソースを開く
+### KiCadでPCBソースを開く
+
 - `PCB/image_sensor/digiobscura.sch`
 - `PCB/image_sensor/digiobscura.kicad_pcb`
 - `PCB/mcu/digiobscura_mcu.sch`
 - `PCB/mcu/digiobscura_mcu.kicad_pcb`
 
-## 開発ノート
-- このリポジトリには統一ビルドシステム（`Makefile`, `platformio.ini`, `package.json` など）はありません。
-- 現在の開発は Arduino + Processing + KiCad + 機械 CAD ファイルにまたがっています。
-- `PCB/image_sensor/README.md` と `PCB/mcu/README.md` は古い/テンプレート的な内容に見え、現時点では一次情報ドキュメントではありません。
-- `i18n/` は存在しますが現在は空で、翻訳は計画中で未コミットです。
+## 開発ノート 📘
 
-## ドキュメントとロードマップ
-`docs/` ディレクトリには段階的な技術進化メモが含まれます:
+- このリポジトリには統合ビルドシステム（`Makefile`, `platformio.ini`, `package.json` など）はありません。
+- 開発は現在、Arduino + Processing + KiCad + 機械CADファイルが中心です。
+- `PCB/image_sensor/README.md` と `PCB/mcu/README.md` は現在、プレースホルダー/テンプレートのような内容で、権威ある情報源ではありません。
+- `i18n/` にはREADMEの翻訳版が入っていますが、未完成な箇所があり、英語版より遅れがある場合があります。
+
+## トラブルシューティング 🧯
+
+| 症状 | チェック |
+|---|---|
+| カメラモードでSDカードが認識されない | 配線と `cardPin`（現在のスケッチでは `21`）を確認してください。SDカードを再フォーマット（FAT/FAT32）して再試行します。 |
+| 画像データが空／ノイズが多い | `OUTCOL` / `OUTROW` 配線とマルチプレクサ制御ピンを確認します。電源インテグリティとセンサーボード接続をチェックします。 |
+| Processingビューアにデータが表示されない | ArduinoとProcessingの両方でシリアルボーレート `115200` を確認します。`portName` を `COM32` から実際のポートに更新します。 |
+| キャプチャが非常に遅い | 32x32フルスキャンと平均化（デフォルトの `avgCount=10`）の結果として予想されます。 |
+
+## ロードマップと技術ノート 🗺️
+
+[`docs/`](./docs/) ディレクトリには、計画中および検討中の技術方針が記録されています。
 
 | ドキュメント | 焦点 |
 |---|---|
-| [`docs/01-firmware-differencing.md`](./docs/01-firmware-differencing.md) | ファームウェアのみの時間差分/イベント |
-| [`docs/02-comparator-event-mode.md`](./docs/02-comparator-event-mode.md) | コンパレータ支援イベント検出 |
-| [`docs/03-bias-and-buffer-upgrade.md`](./docs/03-bias-and-buffer-upgrade.md) | アナログ・フロントエンド/バイアス改善 |
-| [`docs/04-full-event-sensor-redesign.md`](./docs/04-full-event-sensor-redesign.md) | 長期的なイベントセンサー再設計オプション |
+| [`docs/01-firmware-differencing.md`](./docs/01-firmware-differencing.md) | ファームウェアのみの時間差分 / イベント |
+| [`docs/02-comparator-event-mode.md`](./docs/02-comparator-event-mode.md) | コンパレータ支援のイベント検出 |
+| [`docs/03-bias-and-buffer-upgrade.md`](./docs/03-bias-and-buffer-upgrade.md) | アナログフロントエンドとバイアス改善 |
+| [`docs/04-full-event-sensor-redesign.md`](./docs/04-full-event-sensor-redesign.md) | 長期的なイベントセンサー再設計の選択肢 |
 
-## トラブルシューティング
-| 症状 | 確認事項 |
-|---|---|
-| カメラモードで SD カードが検出されない | 配線と `cardPin`（現行スケッチでは `21`）を確認。SD カードを（FAT/FAT32 で）再フォーマットして再試行。 |
-| 画像データが空白/ノイズだらけ | `OUTCOL`/`OUTROW` 配線と MUX 制御ピンを確認。電源品質とセンサーボード接続を確認。 |
-| Processing ビューアにデータが表示されない | Arduino 側・Processing 側ともにシリアルボーレート `115200` を確認。`portName` を `COM32` から実際のポートへ更新。 |
-| 撮影が非常に遅い | フル 32x32 走査と平均化（既定 `avgCount=10`）のため想定内。 |
+## コントリビュート 🤝
 
-## サポート / スポンサー
-ファームウェアヘッダーより:
+コントリビューションは歓迎します。推奨分野:
 
-- Creator: Sean Hodgins
-- YouTube: http://youtube.com/seanhodginsfilms
-- Patreon: https://patreon.com/seanhodgins
+- ハードウェア立ち上げノートと検証済みのピンマップ。
+- ツールチェーン/バージョン検証（Arduinoコア、ライブラリ、Processingのバージョン）。
+- 文書更新（特に配線図とキャリブレーションのワークフロー）。
 
-このプロジェクトをベースに製作する場合は、原作者への支援を検討してください。
+- 言語対象が確定した後の `i18n/` README 翻訳。
 
-## コントリビュート
-コントリビューション歓迎です。推奨分野:
-
-- ハードウェア立ち上げメモと検証済みピンマップ。
-- ツールチェーン/バージョン検証（Arduino core、ライブラリ、Processing バージョン）。
-- ドキュメント更新（特に配線図とキャリブレーション手順）。
-- 言語ターゲット確定後の `i18n/` README 翻訳。
-
-ハードウェアまたはファームウェア動作に関わる変更には、以下を含めてください:
-- テストセットアップ詳細。
-- ボードリビジョン情報。
-- 変更前/変更後の挙動メモ。
+ハードウェアまたはファームウェア挙動に変更がある場合は、以下を含めます。
+- テスト構成の詳細。
+- ボードリビジョンのコンテキスト。
+- 変更前後の挙動メモ。
 
 ## ライセンス
-- リポジトリのライセンスファイル: [`LICENSE`](./LICENSE)（リポジトリ内に GPL-3.0 テキストあり）。
-- ファームウェアヘッダーノート: 現在の `.ino` ヘッダーは `cc-by-sa-nc-3.0` を記載。
 
-重要: この 2 つのライセンス表示は異なります。メンテナにより明確化されるまで、再配布/商用利用にはプロジェクトオーナー確認が必要なライセンスとして扱ってください。
+- このリポジトリの `LICENSE` は、リポジトリ全体として現時点ではGPL-3.0で配布されていることを示しています。
+- ファームウェアヘッダコメントは、いくつかのソースヘッダーで `CC BY-NC-SA 3.0` を参照しています。
 
-## 謝辞
-- Sean Hodgins / digiOBSCURA プロジェクトの成果物、および公開ドキュメント/動画。
-- DIY センサー実験を可能にするオープンハードウェアとメイカーコミュニティの各種リソース。
+バイナリ、ハードウェア成果物、派生物を再配布する場合は、対象ファイルの正確なライセンス条件を確認し、想定用途と互換性があることを確認してください。
+
+
+## ❤️ Support
+
+| Donate | PayPal | Stripe |
+| --- | --- | --- |
+| [![Donate](https://camo.githubusercontent.com/24a4914f0b42c6f435f9e101621f1e52535b02c225764b2f6cc99416926004b7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d4c617a79696e674172742d3045413545393f7374796c653d666f722d7468652d6261646765266c6f676f3d6b6f2d6669266c6f676f436f6c6f723d7768697465)](https://chat.lazying.art/donate) | [![PayPal](https://camo.githubusercontent.com/d0f57e8b016517a4b06961b24d0ca87d62fdba16e18bbdb6aba28e978dc0ea21/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f50617950616c2d526f6e677a686f754368656e2d3030343537433f7374796c653d666f722d7468652d6261646765266c6f676f3d70617970616c266c6f676f436f6c6f723d7768697465)](https://paypal.me/RongzhouChen) | [![Stripe](https://camo.githubusercontent.com/1152dfe04b6943afe3a8d2953676749603fb9f95e24088c92c97a01a897b4942/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5374726970652d446f6e6174652d3633354246463f7374796c653d666f722d7468652d6261646765266c6f676f3d737472697065266c6f676f436f6c6f723d7768697465)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
